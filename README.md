@@ -30,7 +30,7 @@ docker compose -p k3 -f 01-sumber-lab/b/b1-compose/docker-compose.yml exec attac
 docker compose -p k3 -f 01-sumber-lab/b/b1-compose/docker-compose.yml down -v
 ```
 
-### Bukti
+### Hasil Implementasi 
 ![Isi file dari container baru](screenshots/t1-command-file.png)
 ![Halaman nginx dari attacker](screenshots/t1-command-web.png)
 ![Isi file dari container baru](screenshots/t1-file.png)
@@ -49,7 +49,7 @@ docker run --rm -v "${PWD}:/work" uts-openssl sh -c 'echo isi laporan k3 > lapor
 docker run --rm -v "${PWD}:/work" uts-openssl sh -c 'openssl req -x509 -newkey rsa:2048 -nodes -keyout key-k3.pem -out cert-k3.pem -days 30 -subj /CN=k3.uts.local && openssl x509 -in cert-k3.pem -noout -subject -issuer -dates'
 ```
 
-### Bukti
+### Hasil Implementasi
 ![Dua hash SHA-256 identik](screenshots/t2-hash.png)
 ![Subject dan Issuer sertifikat](screenshots/t2-cert.png)
 
@@ -75,7 +75,7 @@ docker exec korban-k3 arp -s <ip-gateway> $(docker exec gateway-k3 cat /sys/clas
 docker exec korban-k3 arp -a
 ```
 
-### Bukti
+### Hasil Implementasi
 ![ARP table sebelum spoofing](screenshots/t3-arp-before.png)
 ![ARP table saat spoofing (MAC gateway berubah)](screenshots/t3-arp-spoofed.png)
 ![ARP table setelah mitigasi static ARP](screenshots/t3-arp-fixed.png)
@@ -99,7 +99,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Muhammad-Ikhwan-Fathul
 git config core.autocrlf false
 ```
 
-### Bukti
+### Hasil Implementasi
 ![Hasil aircrack-ng](screenshots/t4-aircrack.png)
 
 ### Penjelasan
@@ -123,7 +123,7 @@ Jalankan dari folder `UTS-Network-Security` (bukan dari dalam folder `kasus`), g
 docker run --rm --network lab-arp-k3 -v "${PWD}/01-sumber-lab/kasus/k5-scapy:/work" uts-kali-tools python3 /work/kirim_icmp.py <ip-korban>
 ```
 
-### Bukti
+### Hasil Implementasi
 ![TTL dan tipe ICMP balasan](screenshots/t5-icmp.png)
 
 ### Penjelasan
@@ -145,7 +145,7 @@ docker compose -p k3 -f 01-sumber-lab/b/b3-syn-flood/docker-compose.yml exec att
 docker compose -p k3 -f 01-sumber-lab/b/b3-syn-flood/docker-compose.yml down -v
 ```
 
-### Bukti
+### Hasil Implementasi
 ![Jumlah SYN_RECV sebelum serangan](screenshots/t6-syn-before.png)
 ![Jumlah SYN_RECV saat serangan](screenshots/t6-syn-flood.png)
 ![Paket SYN, SYN-ACK, ACK dari tcpdump](screenshots/t6-tcpdump.png)
@@ -173,7 +173,7 @@ docker compose -p k3 -f 01-sumber-lab/b/b4-dns-exfil/docker-compose.yml down -v
 ```
 Catatan: gunakan `Out-File -Encoding utf8` (bukan `>` biasa) saat menyimpan log ke file — PowerShell 5.1 menulis redirect `>` dengan encoding UTF-16 secara default, yang bisa membuat `analisis_dns.py` gagal mem-parsing isi log (hasilnya tampak kosong padahal log sebenarnya ada isinya).
 
-### Bukti
+### Hasil Implementasi
 ![Label hex NIM terdeteksi di log DNS](screenshots/t7-log-detect.png)
 ![Hasil decode kembali menjadi NIM](screenshots/t7-decode.png)
 
