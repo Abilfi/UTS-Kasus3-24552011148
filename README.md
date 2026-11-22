@@ -31,6 +31,8 @@ docker compose -p k3 -f 01-sumber-lab/b/b1-compose/docker-compose.yml down -v
 ```
 
 ### Bukti
+![Isi file dari container baru](screenshots/t1-command-file.png)
+![Halaman nginx dari attacker](screenshots/t1-command-web.png)
 ![Isi file dari container baru](screenshots/t1-file.png)
 ![Halaman nginx dari attacker](screenshots/t1-nginx.png)
 
