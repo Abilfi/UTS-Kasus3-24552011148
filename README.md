@@ -192,4 +192,3 @@ Catatan: gunakan `Out-File -Encoding utf8` (bukan `>` biasa) saat menyimpan log 
 ---
 
 ## Kesimpulan
-(Tulis ringkasan pembelajaran Anda dari ketujuh tugas di atas: mulai dari manajemen container/volume, kriptografi dasar, serangan lapisan 2 (ARP spoofing), keamanan wireless (WPA2), serangan/analisis lapisan jaringan (ICMP, SYN flood), hingga eksfiltrasi data via DNS — serta pentingnya mitigasi pada tiap kasus.)
