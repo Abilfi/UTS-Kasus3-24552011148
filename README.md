@@ -32,8 +32,11 @@ docker compose -p k3 -f 01-sumber-lab/b/b1-compose/docker-compose.yml down -v
 
 ### Hasil Implementasi 
 ![Isi file dari container baru](screenshots/t1-command-file.png)
+
 ![Halaman nginx dari attacker](screenshots/t1-command-web.png)
+
 ![Isi file dari container baru](screenshots/t1-file.png)
+
 ![Halaman nginx dari attacker](screenshots/t1-nginx.png)
 
 ### Penjelasan
@@ -51,6 +54,7 @@ docker run --rm -v "${PWD}:/work" uts-openssl sh -c 'openssl req -x509 -newkey r
 
 ### Hasil Implementasi
 ![Dua hash SHA-256 identik](screenshots/t2-hash.png)
+
 ![Subject dan Issuer sertifikat](screenshots/t2-cert.png)
 
 ### Penjelasan
@@ -77,7 +81,9 @@ docker exec korban-k3 arp -a
 
 ### Hasil Implementasi
 ![ARP table sebelum spoofing](screenshots/t3-arp-before.png)
+
 ![ARP table saat spoofing (MAC gateway berubah)](screenshots/t3-arp-spoofed.png)
+
 ![ARP table setelah mitigasi static ARP](screenshots/t3-arp-fixed.png)
 
 ### Penjelasan
@@ -147,7 +153,9 @@ docker compose -p k3 -f 01-sumber-lab/b/b3-syn-flood/docker-compose.yml down -v
 
 ### Hasil Implementasi
 ![Jumlah SYN_RECV sebelum serangan](screenshots/t6-syn-before.png)
+
 ![Jumlah SYN_RECV saat serangan](screenshots/t6-syn-flood.png)
+
 ![Paket SYN, SYN-ACK, ACK dari tcpdump](screenshots/t6-tcpdump.png)
 
 ### Penjelasan
@@ -175,6 +183,7 @@ Catatan: gunakan `Out-File -Encoding utf8` (bukan `>` biasa) saat menyimpan log 
 
 ### Hasil Implementasi
 ![Label hex NIM terdeteksi di log DNS](screenshots/t7-log-detect.png)
+
 ![Hasil decode kembali menjadi NIM](screenshots/t7-decode.png)
 
 ### Penjelasan
