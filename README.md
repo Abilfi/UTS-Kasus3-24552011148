@@ -4,6 +4,8 @@
 
 **NIM**: 24552011148
 
+**Kelas**: TIF RP 24 E CNS
+
 **Mata kuliah**: Keamanan Jaringan
 
 **Dosen Pengampu**: Yasti Aisyah Primianjani, S.Kom., M.S.F.
