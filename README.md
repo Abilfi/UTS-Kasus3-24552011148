@@ -92,7 +92,7 @@ Sebelum spoofing, tabel ARP korban memetakan IP gateway ke MAC address gateway y
 ---
 
 ## Tugas 4 (Pertemuan 4): Analisis Handshake WPA2
-
+ 
 ### Perintah
 File `handshake-k3.cap` dan `wordlist-k3.txt` berada di `01-sumber-lab\samples\`. Jalankan dari folder tersebut:
 ```powershell
@@ -104,19 +104,27 @@ Catatan: jika muncul error `This file is not a regular 802.11 (wireless) capture
 Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Muhammad-Ikhwan-Fathulloh/Network-Security-Course-Bank/main/UTS-Network-Security/01-sumber-lab/samples/handshake-k3.cap" -OutFile "handshake-k3.cap"
 git config core.autocrlf false
 ```
-
-### Hasil Implementasi
-![Hasil aircrack-ng](screenshots/t4-aircrack.png)
-
+ 
+**Catatan verifikasi**: pada repo ini, file `handshake-k3.cap` tetap gagal dibaca (`Read 0 packets`) meskipun sudah diunduh ulang langsung dari raw GitHub (bukan via `git clone`, sehingga bukan lagi masalah CRLF). Untuk memastikan setup Docker dan command `aircrack-ng` sudah benar, dilakukan uji coba dengan file capture WPA2 sampel resmi dari test suite proyek aircrack-ng (`wpa.cap`, password diketahui `biscotte`):
+```powershell
+Invoke-WebRequest -Uri "https://gitlab.com/kalilinux/packages/aircrack-ng/-/raw/kali/master/test/wpa.cap" -OutFile "handshake-sample.cap"
+"biscotte" | Out-File -Encoding ascii "wordlist-sample.txt"
+docker run --rm -v "${PWD}:/work" uts-kali-tools aircrack-ng -w wordlist-sample.txt handshake-sample.cap
+```
+Hasilnya **berhasil** menampilkan `KEY FOUND! [ biscotte ]`, membuktikan Docker image, mounting volume, dan command `aircrack-ng` sudah berfungsi normal — sehingga kegagalan pada `handshake-k3.cap` murni disebabkan file tersebut rusak di sumber repositori, bukan kesalahan konfigurasi di sisi pengerjaan. Hal ini telah dikonfirmasikan ke pengampu mata kuliah untuk mendapatkan file `handshake-k3.cap` dan `wordlist-k3.txt` yang valid.
+ 
+### Bukti
+![Hasil aircrack-ng pada file sampel (bukti command & environment berfungsi normal)](screenshots/t4-aircrack-sample.png)
+![Hasil aircrack-ng pada handshake-k3.cap (isi sesuai kasus, menyusul setelah file valid diterima dari penguji)](screenshots/t4-aircrack.png)
+ 
 ### Penjelasan
 `aircrack-ng` mencocokkan setiap kata dalam `wordlist-k3.txt` terhadap data handshake WPA2 yang terekam di `handshake-k3.cap`, untuk menemukan Pre-Shared Key (PSK) yang digunakan jaringan tersebut.
-
+ 
 Empat langkah WPA2 4-way handshake:
 1. **Message 1 (AP → Klien)**: Access Point mengirim ANonce (nilai acak) ke klien.
 2. **Message 2 (Klien → AP)**: Klien membuat SNonce, menghitung PTK (Pairwise Transient Key) dari PSK + ANonce + SNonce + MAC address, lalu mengirim SNonce beserta MIC (Message Integrity Code) ke AP.
 3. **Message 3 (AP → Klien)**: AP yang sudah menghitung PTK yang sama, mengirim GTK (Group Temporal Key) yang dienkripsi beserta MIC untuk verifikasi.
 4. **Message 4 (Klien → AP)**: Klien mengonfirmasi penerimaan dengan mengirim ACK, dan kedua pihak mulai menggunakan PTK/GTK untuk enkripsi trafik data.
-
 Karena seluruh proses ini melibatkan MIC yang bergantung pada PSK, menangkap handshake dan melakukan dictionary attack (seperti `aircrack-ng`) adalah cara menguji kekuatan PSK tersebut.
 
 ---
