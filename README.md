@@ -113,7 +113,7 @@ docker run --rm -v "${PWD}:/work" uts-kali-tools aircrack-ng -w wordlist-sample.
 ```
 Hasilnya **berhasil** menampilkan `KEY FOUND! [ biscotte ]`, membuktikan Docker image, mounting volume, dan command `aircrack-ng` sudah berfungsi normal — sehingga kegagalan pada `handshake-k3.cap` murni disebabkan file tersebut rusak di sumber repositori, bukan kesalahan konfigurasi di sisi pengerjaan. Hal ini telah dikonfirmasikan ke pengampu mata kuliah untuk mendapatkan file `handshake-k3.cap` dan `wordlist-k3.txt` yang valid.
  
-### Bukti
+### Hasil Implementasi
 ![Hasil aircrack-ng pada file sampel (bukti command & environment berfungsi normal)](screenshots/t4-aircrack-sample.png)
 
 ![Hasil aircrack-ng pada handshake-k3.cap (isi sesuai kasus, menyusul setelah file valid diterima dari penguji)](screenshots/t4-aircrack.png)
@@ -201,3 +201,5 @@ Catatan: gunakan `Out-File -Encoding utf8` (bukan `>` biasa) saat menyimpan log 
 ---
 
 ## Kesimpulan
+
+Berdasarkan hasil praktikum UTS Keamanan Jaringan, dapat disimpulkan bahwa praktikum ini memberikan pemahaman mengenai penggunaan Docker, kriptografi, serta berbagai teknik serangan dan analisis keamanan jaringan. Melalui pengujian Docker Volume, enkripsi AES, ARP Spoofing, analisis WPA2 Handshake, ICMP, SYN Flood, dan DNS Exfiltration, mahasiswa dapat memahami cara kerja serangan, dampaknya terhadap keamanan jaringan, serta metode mendeteksi dan melakukan mitigasi. Praktikum ini juga meningkatkan keterampilan dalam menggunakan command line, mengelola container, menganalisis trafik jaringan, dan melakukan troubleshooting pada lingkungan Windows PowerShell. Dengan demikian, praktikum ini memberikan pengalaman langsung mengenai pentingnya integritas data, keamanan komunikasi, dan penerapan mekanisme pertahanan untuk melindungi jaringan dari berbagai ancaman.
