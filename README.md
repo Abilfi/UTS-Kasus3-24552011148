@@ -1,7 +1,9 @@
 # Laporan UTS Keamanan Jaringan — Kasus 3 (k3)
 
-**Nama**: (isi nama Anda)
+**Nama**: Abil Fida Ismail
 **NIM**: 24552011148
+**Mata kuliah**: Keamanan Jaringan
+**Dosen Pengampu**: Yasti Aisyah Primianjani, S.Kom., M.S.F.
 **Kasus**: 3 (k3)
 
 ## Parameter Kasus
