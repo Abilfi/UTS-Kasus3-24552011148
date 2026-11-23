@@ -115,6 +115,7 @@ Hasilnya **berhasil** menampilkan `KEY FOUND! [ biscotte ]`, membuktikan Docker 
  
 ### Bukti
 ![Hasil aircrack-ng pada file sampel (bukti command & environment berfungsi normal)](screenshots/t4-aircrack-sample.png)
+
 ![Hasil aircrack-ng pada handshake-k3.cap (isi sesuai kasus, menyusul setelah file valid diterima dari penguji)](screenshots/t4-aircrack.png)
  
 ### Penjelasan
