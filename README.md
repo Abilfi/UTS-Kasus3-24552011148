@@ -1,4 +1,4 @@
-# Laporan UTS Keamanan Jaringan — Kasus 3 (k3)
+9# Laporan UTS Keamanan Jaringan — Kasus 3 (k3)
 
 **Nama**: Abil Fida Ismail
 
@@ -8,7 +8,7 @@
 
 **Mata kuliah**: Keamanan Jaringan
 
-**Dosen Pengampu**: Yasti Aisyah Primianjani, S.Kom., M.S.F.
+**Dosen pengampu**: Yasti Aisyah Primianjani, S.Kom., M.S.F.
 
 **Kasus**: 3 (k3)
 
@@ -122,9 +122,10 @@ docker run --rm -v "${PWD}:/work" uts-kali-tools aircrack-ng -w wordlist-sample.
 Hasilnya **berhasil** menampilkan `KEY FOUND! [ biscotte ]`, membuktikan Docker image, mounting volume, dan command `aircrack-ng` sudah berfungsi normal — sehingga kegagalan pada `handshake-k3.cap` murni disebabkan file tersebut rusak di sumber repositori, bukan kesalahan konfigurasi di sisi pengerjaan. Hal ini telah dikonfirmasikan ke pengampu mata kuliah untuk mendapatkan file `handshake-k3.cap` dan `wordlist-k3.txt` yang valid.
  
 ### Hasil Implementasi
-![Hasil aircrack-ng pada file sampel (bukti command & environment berfungsi normal)](screenshots/t4-aircrack-sample.png)
 
 ![Hasil aircrack-ng pada handshake-k3.cap (isi sesuai kasus, menyusul setelah file valid diterima dari penguji)](screenshots/t4-aircrack.png)
+
+![Hasil aircrack-ng pada file sampel (bukti command & environment berfungsi normal)](screenshots/t4-aircrack-sample.png)
  
 ### Penjelasan
 `aircrack-ng` mencocokkan setiap kata dalam `wordlist-k3.txt` terhadap data handshake WPA2 yang terekam di `handshake-k3.cap`, untuk menemukan Pre-Shared Key (PSK) yang digunakan jaringan tersebut.
